@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane minHeight="285.0" minWidth="211.0" prefHeight="285.0" prefWidth="232.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="sample.Controller">
+  <children>
+    <BorderPane prefHeight="192.00009999999747" prefWidth="206.0" AnchorPane.leftAnchor="13.0" AnchorPane.topAnchor="30.0">
+      <top>
+        <VBox alignment="CENTER" prefHeight="202.0" prefWidth="206.0" BorderPane.alignment="CENTER">
+          <children>
+            <Label prefWidth="36.0" text="Label" />
+            <TextField prefWidth="200.0" />
+            <Label text="Label" />
+            <TextField prefWidth="200.0" />
+            <Label text="Label" />
+            <TextField prefWidth="200.0" />
+            <Label text="Label" />
+            <TextField prefWidth="200.0" />
+          </children>
+        </VBox>
+      </top>
+    </BorderPane>
+    <Button layoutX="83.0" layoutY="232.0" mnemonicParsing="false" onAction="#closeButtonAction" text="confirm" />
+    <Button layoutX="13.0" layoutY="232.0" mnemonicParsing="false" text="zmien" />
+  </children>
+</AnchorPane>

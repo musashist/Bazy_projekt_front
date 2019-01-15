@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="459.0" prefWidth="668.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+  <bottom>
+    <AnchorPane prefHeight="342.0" prefWidth="668.0">
+      <children>
+        <TabPane fx:id="tableTabPane" layoutX="0.0" layoutY="0.0" prefHeight="342.0" prefWidth="668.0" tabClosingPolicy="UNAVAILABLE">
+          <tabs>
+            <Tab text="Worker">
+              <content>
+                <TableView fx:id="tabela1" prefHeight="306.0" prefWidth="668.0">
+                  <columns>
+                    <TableColumn fx:id="Imie" prefWidth="75.0" text="Imie" />
+                    <TableColumn fx:id="Nazwisko" prefWidth="75.0" text="Nazwisko" />
+                              <TableColumn fx:id="Cardid" prefWidth="75.0" text="Card Id" />
+                  </columns>
+                </TableView>
+              </content>
+            </Tab>
+            <Tab fx:id="tabLawsuit" text="Lawsuits">
+              <content>
+                <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <children>
+                    <TableView fx:id="tableLawsuit" layoutX="0.0" layoutY="0.0" prefHeight="306.0" prefWidth="668.0">
+                      <columns>
+                                    <TableColumn prefWidth="75.0" text="ID" />
+                        <TableColumn prefWidth="75.0" text="Courtroom ID" />
+                        <TableColumn prefWidth="75.0" text="L. Start Date" />
+                                    <TableColumn prefWidth="75.0" text="L. End Date" />
+                                    <TableColumn prefWidth="99.0" text="Pros. Card ID" />
+                                    <TableColumn prefWidth="113.0" text="Judge Card ID" />
+                      </columns>
+                    </TableView>
+                  </children>
+                </AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Judgement">
+              <content>
+                <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="tableJudgement" prefHeight="314.0" prefWidth="668.0">
+                                <columns>
+                                    <TableColumn prefWidth="75.0" text="ID" />
+                                  <TableColumn prefWidth="75.0" text="Content" />
+                                  <TableColumn prefWidth="75.0" text="Judgement" />
+                                    <TableColumn prefWidth="75.0" text="Suspence" />
+                                    <TableColumn prefWidth="75.0" text="Lawsuit ID" />
+                                </columns>
+                              </TableView>
+                           </children></AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Criminal">
+              <content>
+                <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="tableCriminal" prefHeight="315.0" prefWidth="668.0">
+                                <columns>
+                                    <TableColumn prefWidth="75.0" text="ID" />
+                                  <TableColumn prefWidth="103.0" text="Crime Category" />
+                                  <TableColumn prefWidth="76.0" text="PESEL" />
+                                    <TableColumn prefWidth="81.0" text="Lawsuit ID" />
+                                    <TableColumn prefWidth="101.0" text="Attorney Card ID" />
+                                    <TableColumn prefWidth="108.0" text="Codex Article" />
+                                </columns>
+                              </TableView>
+                           </children></AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Person">
+              <content>
+                <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="tablePerson" prefHeight="315.0" prefWidth="668.0">
+                                <columns>
+                                  <TableColumn prefWidth="75.0" text="Name" />
+                                  <TableColumn prefWidth="75.0" text="Surname" />
+                                    <TableColumn prefWidth="75.0" text="PESEL" />
+                                </columns>
+                              </TableView>
+                           </children></AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Evidence">
+              <content>
+                <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="tableEvidence" prefHeight="314.0" prefWidth="668.0">
+                                <columns>
+                                    <TableColumn prefWidth="75.0" text="ID" />
+                                    <TableColumn prefWidth="75.0" text="Lawsuit ID" />
+                                  <TableColumn prefWidth="75.0" text="Name" />
+                                  <TableColumn prefWidth="75.0" text="Type" />
+                                </columns>
+                              </TableView>
+                           </children></AnchorPane>
+              </content>
+            </Tab>
+            <Tab text="Witness">
+              <content>
+                <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <TableView fx:id="tableWitness" prefHeight="314.0" prefWidth="668.0">
+                                <columns>
+                                    <TableColumn prefWidth="75.0" text="ID" />
+                                  <TableColumn prefWidth="75.0" text="Name" />
+                                  <TableColumn prefWidth="75.0" text="Surname" />
+                                    <TableColumn prefWidth="75.0" text="Profession" />
+                                    <TableColumn prefWidth="75.0" text="Lawsuit ID" />
+                                </columns>
+                              </TableView>
+                           </children></AnchorPane>
+              </content>
+            </Tab>
+          </tabs>
+        </TabPane>
+      </children>
+    </AnchorPane>
+  </bottom>
+  <center>
+    <VBox prefHeight="134.0" prefWidth="668.0" BorderPane.alignment="CENTER">
+      <children>
+        <MenuBar>
+          <menus>
+            <Menu mnemonicParsing="false" text="File">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Close" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Edit">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Delete" />
+              </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Help">
+              <items>
+                <MenuItem mnemonicParsing="false" text="About" />
+              </items>
+            </Menu>
+          </menus>
+        </MenuBar>
+        <HBox prefHeight="43.0" prefWidth="668.0">
+          <children>
+            <Button mnemonicParsing="false" onAction="#handle" text="Add" />
+            <Button mnemonicParsing="false" onAction="#addToTable" text="Dodajsyf do tabeli" />
+            <Button mnemonicParsing="false" onAction="#delete" text="Delete" />
+                  <Button mnemonicParsing="false" onAction="#update2" text="Update" />
+                  <TextField fx:id="searchfield" />
+                  <Button mnemonicParsing="false" onAction="#search" text="Search" />
+          </children>
+        </HBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#selectFirst" text="Select" />
+                  <Button mnemonicParsing="false" onAction="#down" text="\\/" />
+                  <Button mnemonicParsing="false" onAction="#up" text="/\" />
+               </children>
+            </HBox>
+      </children>
+    </VBox>
+  </center>
+</BorderPane>
