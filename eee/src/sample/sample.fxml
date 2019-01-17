@@ -20,13 +20,14 @@
       <children>
         <TabPane fx:id="tableTabPane" layoutX="0.0" layoutY="0.0" prefHeight="342.0" prefWidth="668.0" tabClosingPolicy="UNAVAILABLE">
           <tabs>
-            <Tab text="Worker">
+            <Tab onSelectionChanged="#fillTable" text="Worker">
               <content>
                 <TableView fx:id="tabela1" prefHeight="306.0" prefWidth="668.0">
                   <columns>
-                    <TableColumn fx:id="Imie" prefWidth="75.0" text="Imie" />
-                    <TableColumn fx:id="Nazwisko" prefWidth="75.0" text="Nazwisko" />
-                              <TableColumn fx:id="Cardid" prefWidth="75.0" text="Card Id" />
+                    <TableColumn fx:id="workerName" prefWidth="75.0" text="Imie" />
+                    <TableColumn fx:id="workerSurname" prefWidth="75.0" text="Nazwisko" />
+                              <TableColumn fx:id="workerCardId" prefWidth="75.0" text="Card Id" />
+                              <TableColumn fx:id="workerRole" prefWidth="75.0" text="Role" />
                   </columns>
                 </TableView>
               </content>
@@ -37,29 +38,29 @@
                   <children>
                     <TableView fx:id="tableLawsuit" layoutX="0.0" layoutY="0.0" prefHeight="306.0" prefWidth="668.0">
                       <columns>
-                                    <TableColumn prefWidth="75.0" text="ID" />
-                        <TableColumn prefWidth="75.0" text="Courtroom ID" />
-                        <TableColumn prefWidth="75.0" text="L. Start Date" />
-                                    <TableColumn prefWidth="75.0" text="L. End Date" />
-                                    <TableColumn prefWidth="99.0" text="Pros. Card ID" />
-                                    <TableColumn prefWidth="113.0" text="Judge Card ID" />
+                                    <TableColumn fx:id="lawsuitId" prefWidth="75.0" text="ID" />
+                        <TableColumn fx:id="courtroomId" prefWidth="117.0" text="Courtroom ID" />
+                        <TableColumn fx:id="lawsuitStartDate" prefWidth="89.0" text="L. Start Date" />
+                                    <TableColumn fx:id="lawsuitEndDate" prefWidth="84.0" text="L. End Date" />
+                                    <TableColumn fx:id="prokuratorCardId" prefWidth="137.0" text="Pros. Card ID" />
+                                    <TableColumn fx:id="sedziaCardId" prefWidth="101.0" text="Judge Card ID" />
                       </columns>
                     </TableView>
                   </children>
                 </AnchorPane>
               </content>
             </Tab>
-            <Tab text="Judgement">
+            <Tab onSelectionChanged="#fillTable" text="Judgement">
               <content>
                 <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
                               <TableView fx:id="tableJudgement" prefHeight="314.0" prefWidth="668.0">
                                 <columns>
-                                    <TableColumn prefWidth="75.0" text="ID" />
-                                  <TableColumn prefWidth="75.0" text="Content" />
-                                  <TableColumn prefWidth="75.0" text="Judgement" />
-                                    <TableColumn prefWidth="75.0" text="Suspence" />
-                                    <TableColumn prefWidth="75.0" text="Lawsuit ID" />
+                                    <TableColumn fx:id="judgementId" prefWidth="75.0" text="ID" />
+                                  <TableColumn fx:id="judgementContent" prefWidth="75.0" text="Content" />
+                                  <TableColumn fx:id="judgement" prefWidth="75.0" text="Judgement" />
+                                    <TableColumn fx:id="suspence" prefWidth="75.0" text="Suspence" />
+                                    <TableColumn fx:id="judgementLawsuitId" prefWidth="75.0" text="Lawsuit ID" />
                                 </columns>
                               </TableView>
                            </children></AnchorPane>
@@ -71,12 +72,12 @@
                            <children>
                               <TableView fx:id="tableCriminal" prefHeight="315.0" prefWidth="668.0">
                                 <columns>
-                                    <TableColumn prefWidth="75.0" text="ID" />
-                                  <TableColumn prefWidth="103.0" text="Crime Category" />
-                                  <TableColumn prefWidth="76.0" text="PESEL" />
-                                    <TableColumn prefWidth="81.0" text="Lawsuit ID" />
-                                    <TableColumn prefWidth="101.0" text="Attorney Card ID" />
-                                    <TableColumn prefWidth="108.0" text="Codex Article" />
+                                    <TableColumn fx:id="criminalId" prefWidth="75.0" text="ID" />
+                                  <TableColumn fx:id="crimeCategory" prefWidth="103.0" text="Crime Category" />
+                                  <TableColumn fx:id="criminalPesel" prefWidth="76.0" text="PESEL" />
+                                    <TableColumn fx:id="criminalLawsuitId" prefWidth="81.0" text="Lawsuit ID" />
+                                    <TableColumn fx:id="obroncaCardId" prefWidth="101.0" text="Attorney Card ID" />
+                                    <TableColumn fx:id="codexArticle" prefWidth="108.0" text="Codex Article" />
                                 </columns>
                               </TableView>
                            </children></AnchorPane>
@@ -88,24 +89,24 @@
                            <children>
                               <TableView fx:id="tablePerson" prefHeight="315.0" prefWidth="668.0">
                                 <columns>
-                                  <TableColumn prefWidth="75.0" text="Name" />
-                                  <TableColumn prefWidth="75.0" text="Surname" />
-                                    <TableColumn prefWidth="75.0" text="PESEL" />
+                                  <TableColumn fx:id="personName" prefWidth="75.0" text="Name" />
+                                  <TableColumn fx:id="personSurname" prefWidth="75.0" text="Surname" />
+                                    <TableColumn fx:id="personPesel" prefWidth="75.0" text="PESEL" />
                                 </columns>
                               </TableView>
                            </children></AnchorPane>
               </content>
             </Tab>
-            <Tab text="Evidence">
+            <Tab onSelectionChanged="#fillTable" text="Evidence">
               <content>
                 <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
                               <TableView fx:id="tableEvidence" prefHeight="314.0" prefWidth="668.0">
                                 <columns>
-                                    <TableColumn prefWidth="75.0" text="ID" />
-                                    <TableColumn prefWidth="75.0" text="Lawsuit ID" />
-                                  <TableColumn prefWidth="75.0" text="Name" />
-                                  <TableColumn prefWidth="75.0" text="Type" />
+                                    <TableColumn fx:id="evidenceId" prefWidth="75.0" text="ID" />
+                                    <TableColumn fx:id="evLawsuitId" prefWidth="75.0" text="Lawsuit ID" />
+                                  <TableColumn fx:id="evidenceName" prefWidth="75.0" text="Name" />
+                                  <TableColumn fx:id="evidenceType" prefWidth="75.0" text="Type" />
                                 </columns>
                               </TableView>
                            </children></AnchorPane>
@@ -117,11 +118,11 @@
                            <children>
                               <TableView fx:id="tableWitness" prefHeight="314.0" prefWidth="668.0">
                                 <columns>
-                                    <TableColumn prefWidth="75.0" text="ID" />
-                                  <TableColumn prefWidth="75.0" text="Name" />
-                                  <TableColumn prefWidth="75.0" text="Surname" />
-                                    <TableColumn prefWidth="75.0" text="Profession" />
-                                    <TableColumn prefWidth="75.0" text="Lawsuit ID" />
+                                    <TableColumn fx:id="witnessId" prefWidth="75.0" text="ID" />
+                                  <TableColumn fx:id="witnessName" prefWidth="75.0" text="Name" />
+                                  <TableColumn fx:id="witnessSurname" prefWidth="75.0" text="Surname" />
+                                    <TableColumn fx:id="witnessProfession" prefWidth="75.0" text="Profession" />
+                                    <TableColumn fx:id="witnessLawsuitId" prefWidth="75.0" text="Lawsuit ID" />
                                 </columns>
                               </TableView>
                            </children></AnchorPane>
@@ -157,7 +158,7 @@
         <HBox prefHeight="43.0" prefWidth="668.0">
           <children>
             <Button mnemonicParsing="false" onAction="#handle" text="Add" />
-            <Button mnemonicParsing="false" onAction="#addToTable" text="Dodajsyf do tabeli" />
+            <Button mnemonicParsing="false" onAction="#fillTable" text="Dodajsyf do tabeli" />
             <Button mnemonicParsing="false" onAction="#delete" text="Delete" />
                   <Button mnemonicParsing="false" onAction="#update2" text="Update" />
                   <TextField fx:id="searchfield" />

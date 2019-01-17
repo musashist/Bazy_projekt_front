@@ -1,8 +1,12 @@
 package sample;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.*;
+
+import javafx.collections.FXCollections;
 import javafx.stage.Modality;
 import com.sun.rowset.internal.Row;
 import javafx.event.EventHandler;
@@ -29,29 +33,122 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.control.SelectionModel;
 import java.util.List;
 import javafx.collections.ObservableList;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import model.*;
+import sun.java2d.pipe.SpanClipRenderer;
+
+import javax.smartcardio.Card;
 
 public class Controller implements Initializable {
     @FXML
     private AnchorPane rootPane;
     @FXML
-    TabPane tableTabPane,updateTabPane;
+    TabPane tableTabPane,updateTabPane,addTabPane;
 
     @FXML
-    TableView<Worker> tabela1,tableLawsuit,tableJudgement,tableCriminal,tablePerson,tableEvidence,tableWitness;
+    TableView<Pracownik> tabela1;//,tableLawsuit,tableJudgement,tableCriminal,tablePerson,tableEvidence,tableWitness;
     @FXML
-    TableColumn<Worker, String> Imie,Nazwisko;
+    TableView<Sprawa> tableLawsuit;
+    @FXML
+    TableView<Wyrok> tableJudgement;
+    @FXML
+    TableView<Oskarzony> tableCriminal;
+    @FXML
+    TableView<Person> tablePerson;
+    @FXML
+    TableView<Dowod> tableEvidence;
+    @FXML
+    TableView<Swiadek> tableWitness;
 
     @FXML
-    TextField searchfield,Namex,surnamex,dupa;
+    TableColumn<Pracownik, String> workerName,workerSurname,workerRole;
     @FXML
-    TableColumn<Worker, String> Cardid;
+    TableColumn<Pracownik, Integer> workerCardId;
+
+    @FXML
+    TableColumn<Sprawa, Integer> lawsuitId;
+    @FXML
+    TableColumn<Sprawa, BigDecimal> courtroomId,prokuratorCardId,sedziaCardId;
+    @FXML
+    TableColumn<Sprawa, Date> lawsuitStartDate,lawsuitEndDate;
+
+    @FXML
+    TableColumn<Wyrok,String> judgementContent,judgement,suspence;
+    @FXML
+    TableColumn<Wyrok,Integer> judgementId;
+    @FXML
+    TableColumn<Wyrok,BigDecimal> judgementLawsuitId;
+
+    @FXML
+    TableColumn<Oskarzony,String> crimeCategory,codexArticle;
+    @FXML
+    TableColumn<Oskarzony,Integer> criminalId,obroncaCardId;
+    @FXML
+    TableColumn<Oskarzony,BigDecimal> criminalLawsuitId,criminalPesel;
+
+    @FXML
+    TableColumn<Dowod,String> evidenceName,evidenceType;
+    @FXML
+    TableColumn<Dowod,Integer> evidenceId;
+    @FXML
+    TableColumn<Dowod,BigDecimal> evLawsuitId;
+
+    @FXML
+    TableColumn<Swiadek,String> witnessName,witnessSurname,witnessProfession;
+    @FXML
+    TableColumn<Swiadek, BigDecimal> witnessLawsuitId;
+    @FXML
+    TableColumn<Swiadek, Integer> witnessId;
+
+    @FXML
+    TextField searchfield;
+
+
 
     @FXML
     Tab tabLawsuit;
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources){
+        /*
+        workerName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        workerSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
+        workerCardId.setCellValueFactory(new PropertyValueFactory<>("cardId"));
+        workerRole.setCellValueFactory(new PropertyValueFactory<>("role"));
+
+
+        lawsuitId.setCellValueFactory(new PropertyValueFactory<>("lawsuitId"));
+        courtroomId.setCellValueFactory(new PropertyValueFactory<>("courtroomId"));
+        prokuratorCardId.setCellValueFactory(new PropertyValueFactory<>("prokuratorCardId"));
+        sedziaCardId.setCellValueFactory(new PropertyValueFactory<>("sedziaCardId"));
+        lawsuitStartDate.setCellValueFactory(new PropertyValueFactory<>("lawsuitStartDate"));
+        lawsuitEndDate.setCellValueFactory(new PropertyValueFactory<>("lawsuitEndDate"));
+
+        judgementContent.setCellValueFactory(new PropertyValueFactory<>("content"));
+        judgement.setCellValueFactory(new PropertyValueFactory<>("judgement"));
+        suspence.setCellValueFactory(new PropertyValueFactory<>("suspence"));
+        judgementId.setCellValueFactory(new PropertyValueFactory<>("judgementId"));
+        judgementLawsuitId.setCellValueFactory(new PropertyValueFactory<>("lawsuitId"));
+
+        crimeCategory.setCellValueFactory(new PropertyValueFactory<>("crimeCategory"));
+        codexArticle.setCellValueFactory(new PropertyValueFactory<>("codexArticle"));
+        criminalId.setCellValueFactory(new PropertyValueFactory<>("criminalId"));
+        obroncaCardId.setCellValueFactory(new PropertyValueFactory<>("obroncaCardId"));
+        criminalLawsuitId.setCellValueFactory(new PropertyValueFactory<>("lawsuitId"));
+        criminalPesel.setCellValueFactory(new PropertyValueFactory<>("pesel"));
+
+        evidenceName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        evidenceType.setCellValueFactory(new PropertyValueFactory<>("type"));
+        evidenceId.setCellValueFactory(new PropertyValueFactory<>("evidenceId"));
+        evLawsuitId.setCellValueFactory(new PropertyValueFactory<>("lawsuitId"));
+
+        witnessName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        witnessSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
+        witnessProfession.setCellValueFactory(new PropertyValueFactory<>("profession"));
+        witnessLawsuitId.setCellValueFactory(new PropertyValueFactory<>("lawsuitId"));
+        witnessId.setCellValueFactory(new PropertyValueFactory<>("witnessId"));
+        */
     }
 
     //otwiera okno do dodawania nowej krotki
@@ -82,20 +179,31 @@ public class Controller implements Initializable {
         System.out.println(fromTextFields);
         //tabPane.getSelectionModel().getSelectedIndex()
         stage.close();
+
         return fromTextFields;
     }
 
-    //dodaje do 1 tabeli 2 wiersze - do testow
-    public void addToTable(ActionEvent event){
-        //tabela1.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        Imie.setCellValueFactory(new PropertyValueFactory<>("Imie"));
-        Nazwisko.setCellValueFactory(new PropertyValueFactory<>("Nazwisko"));
-        Worker person1 = new Worker("John","Smiths");
-        Worker person2 = new Worker("Terry","Fuck");
-        tabela1.getItems().add(person1);
-        tabela1.getItems().add(person2);
-        System.out.println(tabela1.getItems());
+    //tworzy obiekt z formularza do dodawania lub update'owania
+    public ArrayList<String> confirmButtonAction3(ActionEvent event){
+        Button btn = (Button) event.getSource();
+        Node tabpan = btn.getParent().getParent().getParent().getParent();
+        TabPane addTabpan = (TabPane) tabpan;
+        int addIndex = addTabpan.getSelectionModel().getSelectedIndex();
 
+
+        System.out.println(addIndex);
+        Stage stage = (Stage) btn.getScene().getWindow();
+        ArrayList<String> fromTextFields = new ArrayList<String>();
+        for (Node node : btn.getParent().getChildrenUnmodifiable()) {
+            if(node instanceof TextField) {
+                fromTextFields.add(((TextField) node).getText());
+            }
+
+        }
+        convert(fromTextFields,addIndex);
+
+        stage.close();
+        return fromTextFields;
     }
 
     //wybiera pierwszy wiersz z tabeli - tylko do testow
@@ -133,6 +241,7 @@ public class Controller implements Initializable {
     }
 
     //otwiera okno do wartosci update
+    //update konczy sie rowniez convertem, wiec tam zarzadzac obiektem w bazie
     public void update2(ActionEvent event){
         try{
             tableTabPane.getTabs();
@@ -170,6 +279,183 @@ public class Controller implements Initializable {
     }
     public void up(ActionEvent event){
         tabela1.getSelectionModel().selectNext();
+    }
+    public void convert(ArrayList<String> listOfInputs, int index){
+        switch (index) {
+            case 0:
+                Pracownik worker1 = new Pracownik();
+                worker1.setName(listOfInputs.get(0));
+                worker1.setSurname(listOfInputs.get(1));
+                worker1.setCardId(Integer.parseInt(listOfInputs.get(2)));
+                worker1.setRole(listOfInputs.get(3));
+                System.out.println(worker1.getName());
+                //tutaj kod dodajacy ziomala do tabeli
+                break;
+            case 1:
+                SimpleDateFormat parse = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
+                Sprawa lawsuit1 = new Sprawa();
+
+                lawsuit1.setLawsuitId(3);
+                lawsuit1.setCourtroomId(new BigDecimal(listOfInputs.get(0)));
+                try {
+                    lawsuit1.setLawsuitStartDate(parse.parse(listOfInputs.get(1)));
+                    lawsuit1.setLawsuitEndDate(parse.parse(listOfInputs.get(2)));
+                }
+                catch (Exception e){
+                    System.out.println(e.getMessage());
+                }
+                lawsuit1.setProkuratorCardId(new BigDecimal(listOfInputs.get(3)));
+                lawsuit1.setSedziaCardId(new BigDecimal(listOfInputs.get(4)));
+
+                System.out.println(lawsuit1.getCourtroomId());
+                break;
+            case 2:
+                Wyrok judgement1= new Wyrok();
+                judgement1.setContent(listOfInputs.get(0));
+                judgement1.setJudgement(listOfInputs.get(1));
+                judgement1.setSuspence(listOfInputs.get(2));
+                judgement1.setLawsuitId(new BigDecimal(listOfInputs.get(3)));
+                judgement1.setJudgementId(1);
+                System.out.println(judgement1.getContent());
+                break;
+            case 3:
+                Oskarzony criminal1= new Oskarzony();
+                criminal1.setCrimeCategory(listOfInputs.get(0));
+                criminal1.setPesel(new BigDecimal(listOfInputs.get(1)));
+                criminal1.setLawsuitId(new BigDecimal(listOfInputs.get(2)));
+                criminal1.setObroncaCardId(Short.parseShort(listOfInputs.get(3)));
+                criminal1.setCodexArticle(listOfInputs.get(4));
+                criminal1.setCriminalId(1);
+                break;
+            case 4:
+                System.out.println("Tu bylaby osoba gdyby fizycznie wystepowala");
+                break;
+            case 5:
+                Dowod evidence1 = new Dowod();
+                evidence1.setName(listOfInputs.get(0));
+                evidence1.setType(listOfInputs.get(1));
+                evidence1.setLawsuitId(new BigDecimal(listOfInputs.get(2)));
+                evidence1.setEvidenceId(1);
+                System.out.println(evidence1.getType());
+                break;
+            case 6:
+                Swiadek witness1= new Swiadek();
+                witness1.setName(listOfInputs.get(0));
+                witness1.setSurname(listOfInputs.get(1));
+                witness1.setProfession(listOfInputs.get(2));
+                witness1.setLawsuitId(new BigDecimal(listOfInputs.get(3)));
+                witness1.setWitnessId(1);
+                break;
+        }
+    }
+
+    //ogolnie sytuacja jest taka, ze potrzeba listy obiektow do wstawienia
+    //i jak sie dostarczy tej metodzie, idk czy jakies globalne listy maja byc z obiektami z tego sqla
+    // to po odkomentowaniu ostatniej linijki w kazdym case'sie zostaną dodane
+    public void fillTable(){
+        tableTabPane.getTabs();
+        int index = tableTabPane.getSelectionModel().getSelectedIndex();
+        System.out.println(index);
+        switch (index) {
+            case 0:
+                workerName.setCellValueFactory(new PropertyValueFactory<>("name"));
+                workerSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
+                workerCardId.setCellValueFactory(new PropertyValueFactory<>("cardId"));
+                workerRole.setCellValueFactory(new PropertyValueFactory<>("role"));
+
+                // przykladowe wstawienie w tabele rekordow
+                Pracownik prac1 = new Pracownik();
+                prac1.setName("lama");
+                prac1.setSurname("lamus");
+                prac1.setCardId(123);
+                prac1.setRole("pedau");
+                Pracownik prac2 = new Pracownik();
+                prac2.setName("lama2");
+                prac2.setSurname("lamus2");
+                prac2.setCardId(1234);
+                prac2.setRole("pedau");
+                Pracownik prac3 = new Pracownik();
+                prac3.setName("lama1");
+                prac3.setSurname("lamus1");
+                prac3.setCardId(1231);
+                prac3.setRole("pedau");
+                ObservableList<Pracownik> listaPracow = FXCollections.observableArrayList();
+                listaPracow.add(prac1);
+                listaPracow.add(prac2);
+                listaPracow.add(prac3);
+                tabela1.getItems().clear();
+                tabela1.setItems(listaPracow);
+                /*
+                tabela1.getItems().clear();
+                tabela1.setItems(listaObiektow);
+                 */
+
+
+
+                break;
+            case 1:
+                lawsuitId.setCellValueFactory(new PropertyValueFactory<>("lawsuitId"));
+                courtroomId.setCellValueFactory(new PropertyValueFactory<>("courtroomId"));
+                prokuratorCardId.setCellValueFactory(new PropertyValueFactory<>("prokuratorCardId"));
+                sedziaCardId.setCellValueFactory(new PropertyValueFactory<>("sedziaCardId"));
+                lawsuitStartDate.setCellValueFactory(new PropertyValueFactory<>("lawsuitStartDate"));
+                lawsuitEndDate.setCellValueFactory(new PropertyValueFactory<>("lawsuitEndDate"));
+
+                //ObservableList<Sprawa> listaObiektow2 = (ObservableList<Sprawa>)listaObiektow;
+                tableLawsuit.getItems().clear();
+                //tableLawsuit.setItems(listaObiektow2);
+                break;
+            case 2:
+                judgementContent.setCellValueFactory(new PropertyValueFactory<>("content"));
+                judgement.setCellValueFactory(new PropertyValueFactory<>("judgement"));
+                suspence.setCellValueFactory(new PropertyValueFactory<>("suspence"));
+                judgementId.setCellValueFactory(new PropertyValueFactory<>("judgementId"));
+                judgementLawsuitId.setCellValueFactory(new PropertyValueFactory<>("lawsuitId"));
+
+                //ObservableList<Wyrok> listaObiektow3 = (ObservableList<Wyrok>)listaObiektow;
+                tableJudgement.getItems().clear();
+                //tableJudgement.setItems(listaObiektow3);
+                break;
+            case 3:
+                crimeCategory.setCellValueFactory(new PropertyValueFactory<>("crimeCategory"));
+                codexArticle.setCellValueFactory(new PropertyValueFactory<>("codexArticle"));
+                criminalId.setCellValueFactory(new PropertyValueFactory<>("criminalId"));
+                obroncaCardId.setCellValueFactory(new PropertyValueFactory<>("obroncaCardId"));
+                criminalLawsuitId.setCellValueFactory(new PropertyValueFactory<>("lawsuitId"));
+                criminalPesel.setCellValueFactory(new PropertyValueFactory<>("pesel"));
+
+                //ObservableList<Oskarzony> listaObiektow4 = (ObservableList<Oskarzony>)listaObiektow;
+                tableCriminal.getItems().clear();
+                //tableCriminal.setItems(listaObiektow4);
+                break;
+            case 4:
+                //ObservableList<Person> listaObiektow5 = (ObservableList<Person>)listaObiektow;
+                tablePerson.getItems().clear();
+                //tablePerson.setItems(listaObiektow5);
+                break;
+            case 5:
+                evidenceName.setCellValueFactory(new PropertyValueFactory<>("name"));
+                evidenceType.setCellValueFactory(new PropertyValueFactory<>("type"));
+                evidenceId.setCellValueFactory(new PropertyValueFactory<>("evidenceId"));
+                evLawsuitId.setCellValueFactory(new PropertyValueFactory<>("lawsuitId"));
+
+                //ObservableList<Dowod> listaObiektow6 = (ObservableList<Dowod>)listaObiektow;
+                tableEvidence.getItems().clear();
+                //tableEvidence.setItems(listaObiektow6);
+
+                break;
+            case 6:
+                witnessName.setCellValueFactory(new PropertyValueFactory<>("name"));
+                witnessSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
+                witnessProfession.setCellValueFactory(new PropertyValueFactory<>("profession"));
+                witnessLawsuitId.setCellValueFactory(new PropertyValueFactory<>("lawsuitId"));
+                witnessId.setCellValueFactory(new PropertyValueFactory<>("witnessId"));
+
+                //ObservableList<Swiadek> listaObiektow7 = (ObservableList<Swiadek>)listaObiektow;
+                tableWitness.getItems().clear();
+                //tableWitness.setItems(listaObiektow7);
+                break;
+        }
     }
 
 }
