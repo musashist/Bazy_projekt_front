@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <settings>
+        <!-- Globally enables or disables any caches configured in any mapper under this configuration -->
+        <setting name="cacheEnabled" value="false"/>
+        <!-- Sets the number of seconds the driver will wait for a response from the database -->
+        <setting name="defaultStatementTimeout" value="5"/>
+        <!-- Enables automatic mapping from classic database column names A_COLUMN to camel case classic Java property names aColumn -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!-- Allows JDBC support for generated keys. A compatible driver is required.
+        This setting forces generated keys to be used if set to true,
+         as some drivers deny compatibility but still work -->
+        <setting name="useGeneratedKeys" value="true"/>
+    </settings>
+    <environments default="srodowisko">
+    <environment id="srodowisko">
+    <transactionManager type="JDBC">
+    </transactionManager>
+        <dataSource type="POOLED">
+            <property name="driver" value="oracle.jdbc.OracleDriver"/>
+            <property name="url" value="jdbc:oracle:thin:@//admlab2.cs.put.poznan.pl:1521/dblab02_students.cs.put.poznan.pl"/>
+            <property name="username" value="inf132340"/>
+            <property name="password" value="MIlanos1234@"/>
+        </dataSource>
+</environment>
+        </environments>
+
+
+<mappers>
+        <!-- XML mapper files should be listed here -->
+        <mapper resource="mappers/DowodMapper.xml" />
+        <mapper resource="mappers/PracownikMapper.xml" />
+        <mapper resource="mappers/OskarzonyMapper.xml" />
+        <mapper resource="mappers/SprawaMapper.xml" />
+        <mapper resource="mappers/SwiadekMapper.xml" />
+        <mapper resource="mappers/WyrokMapper.xml" />
+</mappers>
+</configuration>

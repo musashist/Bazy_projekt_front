@@ -1,10 +1,18 @@
 package sample;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import interfaces.*;
+import model.Pracownik;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import javafx.collections.FXCollections;
 import javafx.stage.Modality;
@@ -39,7 +47,12 @@ import model.*;
 import sun.java2d.pipe.SpanClipRenderer;
 
 import javax.smartcardio.Card;
-
+import interfaces.PracownikMapper;
+import model.Pracownik;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 public class Controller implements Initializable {
     @FXML
     private AnchorPane rootPane;
@@ -54,8 +67,6 @@ public class Controller implements Initializable {
     TableView<Wyrok> tableJudgement;
     @FXML
     TableView<Oskarzony> tableCriminal;
-    @FXML
-    TableView<Person> tablePerson;
     @FXML
     TableView<Dowod> tableEvidence;
     @FXML
@@ -109,46 +120,22 @@ public class Controller implements Initializable {
     @FXML
     Tab tabLawsuit;
 
+    PracownikMapper pracownikMapper=null;
+
+    SwiadekMapper swiadekMapper=null;
+
+    WyrokMapper wyrokMapper=null;
+
+    SprawaMapper sprawaMapper=null;
+
+    OskarzonyMapper oskarzonyMapper=null;
+
+    DowodMapper dowodMapper=null;
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources){
-        /*
-        workerName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        workerSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
-        workerCardId.setCellValueFactory(new PropertyValueFactory<>("cardId"));
-        workerRole.setCellValueFactory(new PropertyValueFactory<>("role"));
 
-
-        lawsuitId.setCellValueFactory(new PropertyValueFactory<>("lawsuitId"));
-        courtroomId.setCellValueFactory(new PropertyValueFactory<>("courtroomId"));
-        prokuratorCardId.setCellValueFactory(new PropertyValueFactory<>("prokuratorCardId"));
-        sedziaCardId.setCellValueFactory(new PropertyValueFactory<>("sedziaCardId"));
-        lawsuitStartDate.setCellValueFactory(new PropertyValueFactory<>("lawsuitStartDate"));
-        lawsuitEndDate.setCellValueFactory(new PropertyValueFactory<>("lawsuitEndDate"));
-
-        judgementContent.setCellValueFactory(new PropertyValueFactory<>("content"));
-        judgement.setCellValueFactory(new PropertyValueFactory<>("judgement"));
-        suspence.setCellValueFactory(new PropertyValueFactory<>("suspence"));
-        judgementId.setCellValueFactory(new PropertyValueFactory<>("judgementId"));
-        judgementLawsuitId.setCellValueFactory(new PropertyValueFactory<>("lawsuitId"));
-
-        crimeCategory.setCellValueFactory(new PropertyValueFactory<>("crimeCategory"));
-        codexArticle.setCellValueFactory(new PropertyValueFactory<>("codexArticle"));
-        criminalId.setCellValueFactory(new PropertyValueFactory<>("criminalId"));
-        obroncaCardId.setCellValueFactory(new PropertyValueFactory<>("obroncaCardId"));
-        criminalLawsuitId.setCellValueFactory(new PropertyValueFactory<>("lawsuitId"));
-        criminalPesel.setCellValueFactory(new PropertyValueFactory<>("pesel"));
-
-        evidenceName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        evidenceType.setCellValueFactory(new PropertyValueFactory<>("type"));
-        evidenceId.setCellValueFactory(new PropertyValueFactory<>("evidenceId"));
-        evLawsuitId.setCellValueFactory(new PropertyValueFactory<>("lawsuitId"));
-
-        witnessName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        witnessSurname.setCellValueFactory(new PropertyValueFactory<>("surname"));
-        witnessProfession.setCellValueFactory(new PropertyValueFactory<>("profession"));
-        witnessLawsuitId.setCellValueFactory(new PropertyValueFactory<>("lawsuitId"));
-        witnessId.setCellValueFactory(new PropertyValueFactory<>("witnessId"));
-        */
     }
 
     //otwiera okno do dodawania nowej krotki
@@ -227,9 +214,6 @@ public class Controller implements Initializable {
                 break;
             case 3:
                 tableCriminal.getItems().removeAll(tableCriminal.getSelectionModel().getSelectedItem());
-                break;
-            case 4:
-                tablePerson.getItems().removeAll(tablePerson.getSelectionModel().getSelectedItem());
                 break;
             case 5:
                 tableEvidence.getItems().removeAll(tableEvidence.getSelectionModel().getSelectedItem());
@@ -353,6 +337,7 @@ public class Controller implements Initializable {
     //i jak sie dostarczy tej metodzie, idk czy jakies globalne listy maja byc z obiektami z tego sqla
     // to po odkomentowaniu ostatniej linijki w kazdym case'sie zostaną dodane
     public void fillTable(){
+        inicjalizacjaMapperow();
         tableTabPane.getTabs();
         int index = tableTabPane.getSelectionModel().getSelectedIndex();
         System.out.println(index);
@@ -363,26 +348,8 @@ public class Controller implements Initializable {
                 workerCardId.setCellValueFactory(new PropertyValueFactory<>("cardId"));
                 workerRole.setCellValueFactory(new PropertyValueFactory<>("role"));
 
-                // przykladowe wstawienie w tabele rekordow
-                Pracownik prac1 = new Pracownik();
-                prac1.setName("lama");
-                prac1.setSurname("lamus");
-                prac1.setCardId(123);
-                prac1.setRole("pedau");
-                Pracownik prac2 = new Pracownik();
-                prac2.setName("lama2");
-                prac2.setSurname("lamus2");
-                prac2.setCardId(1234);
-                prac2.setRole("pedau");
-                Pracownik prac3 = new Pracownik();
-                prac3.setName("lama1");
-                prac3.setSurname("lamus1");
-                prac3.setCardId(1231);
-                prac3.setRole("pedau");
-                ObservableList<Pracownik> listaPracow = FXCollections.observableArrayList();
-                listaPracow.add(prac1);
-                listaPracow.add(prac2);
-                listaPracow.add(prac3);
+                List<Pracownik> pracownicy=pracownikMapper.selectAll();
+                ObservableList<Pracownik> listaPracow = FXCollections.observableArrayList(pracownicy);
                 tabela1.getItems().clear();
                 tabela1.setItems(listaPracow);
                 /*
@@ -401,9 +368,10 @@ public class Controller implements Initializable {
                 lawsuitStartDate.setCellValueFactory(new PropertyValueFactory<>("lawsuitStartDate"));
                 lawsuitEndDate.setCellValueFactory(new PropertyValueFactory<>("lawsuitEndDate"));
 
-                //ObservableList<Sprawa> listaObiektow2 = (ObservableList<Sprawa>)listaObiektow;
+                List<Sprawa> sprawy=sprawaMapper.selectAll();
+                ObservableList<Sprawa> listaSpraw = FXCollections.observableArrayList(sprawy);
                 tableLawsuit.getItems().clear();
-                //tableLawsuit.setItems(listaObiektow2);
+                tableLawsuit.setItems(listaSpraw);
                 break;
             case 2:
                 judgementContent.setCellValueFactory(new PropertyValueFactory<>("content"));
@@ -411,10 +379,10 @@ public class Controller implements Initializable {
                 suspence.setCellValueFactory(new PropertyValueFactory<>("suspence"));
                 judgementId.setCellValueFactory(new PropertyValueFactory<>("judgementId"));
                 judgementLawsuitId.setCellValueFactory(new PropertyValueFactory<>("lawsuitId"));
-
-                //ObservableList<Wyrok> listaObiektow3 = (ObservableList<Wyrok>)listaObiektow;
+                List<Wyrok> wyroks=wyrokMapper.selectAll();
+                ObservableList<Wyrok> listawyroks = FXCollections.observableArrayList(wyroks);
                 tableJudgement.getItems().clear();
-                //tableJudgement.setItems(listaObiektow3);
+                tableJudgement.setItems(listawyroks);
                 break;
             case 3:
                 crimeCategory.setCellValueFactory(new PropertyValueFactory<>("crimeCategory"));
@@ -423,15 +391,10 @@ public class Controller implements Initializable {
                 obroncaCardId.setCellValueFactory(new PropertyValueFactory<>("obroncaCardId"));
                 criminalLawsuitId.setCellValueFactory(new PropertyValueFactory<>("lawsuitId"));
                 criminalPesel.setCellValueFactory(new PropertyValueFactory<>("pesel"));
-
-                //ObservableList<Oskarzony> listaObiektow4 = (ObservableList<Oskarzony>)listaObiektow;
+                List<Oskarzony> oskarzonys=oskarzonyMapper.selectAll();
+                ObservableList<Oskarzony> listaOskarzony = FXCollections.observableArrayList(oskarzonys);
                 tableCriminal.getItems().clear();
-                //tableCriminal.setItems(listaObiektow4);
-                break;
-            case 4:
-                //ObservableList<Person> listaObiektow5 = (ObservableList<Person>)listaObiektow;
-                tablePerson.getItems().clear();
-                //tablePerson.setItems(listaObiektow5);
+                tableCriminal.setItems(listaOskarzony);
                 break;
             case 5:
                 evidenceName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -439,10 +402,10 @@ public class Controller implements Initializable {
                 evidenceId.setCellValueFactory(new PropertyValueFactory<>("evidenceId"));
                 evLawsuitId.setCellValueFactory(new PropertyValueFactory<>("lawsuitId"));
 
-                //ObservableList<Dowod> listaObiektow6 = (ObservableList<Dowod>)listaObiektow;
+                List<Dowod> dowods=dowodMapper.selectAll();
+                ObservableList<Dowod> listadowod = FXCollections.observableArrayList(dowods);
                 tableEvidence.getItems().clear();
-                //tableEvidence.setItems(listaObiektow6);
-
+                tableEvidence.setItems(listadowod);
                 break;
             case 6:
                 witnessName.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -450,12 +413,30 @@ public class Controller implements Initializable {
                 witnessProfession.setCellValueFactory(new PropertyValueFactory<>("profession"));
                 witnessLawsuitId.setCellValueFactory(new PropertyValueFactory<>("lawsuitId"));
                 witnessId.setCellValueFactory(new PropertyValueFactory<>("witnessId"));
-
-                //ObservableList<Swiadek> listaObiektow7 = (ObservableList<Swiadek>)listaObiektow;
+                List<Swiadek> swiadeks=swiadekMapper.selectAll();
+                ObservableList<Swiadek> listaswiadek = FXCollections.observableArrayList(swiadeks);
                 tableWitness.getItems().clear();
-                //tableWitness.setItems(listaObiektow7);
+                tableWitness.setItems(listaswiadek);
                 break;
         }
+    }
+    private void inicjalizacjaMapperow(){
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = null;
+        try {
+            inputStream = Resources.getResourceAsStream(resource);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        SqlSessionFactory sqlSessionFactory =
+                new SqlSessionFactoryBuilder().build(inputStream);
+        SqlSession session = sqlSessionFactory.openSession();
+        pracownikMapper=session.getMapper(PracownikMapper.class);
+        swiadekMapper=session.getMapper(SwiadekMapper.class);
+        dowodMapper=session.getMapper(DowodMapper.class);
+        oskarzonyMapper=session.getMapper(OskarzonyMapper.class);
+        wyrokMapper=session.getMapper(WyrokMapper.class);
+        sprawaMapper=session.getMapper(SprawaMapper.class);
     }
 
 }
